@@ -1,13 +1,13 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
 _commit: 7c99f9e
 _src_path: gh:1000lines/symphony-client-template
-build_command: 'npm install --no-package-lock
+build_command: "npm install --no-package-lock
 
-    '
+    "
 cadence_app_slug: 1000lines-cadence
 cadence_reviewer: codex
 default_branch: main
-linear_team_key: '100'
+linear_team_key: "100"
 repo_slug: 1000lines/eslint
 symphony_app_slug: 1000lines-symphony[bot]
 test_command: node Makefile.js mocha

@@ -17,21 +17,21 @@ all IDs from actual responses; an example team is not a default.
 
 ```graphql
 query Identity {
-  viewer {
-    id
-    name
-  }
-  organization {
-    id
-    name
-  }
-  teams {
-    nodes {
-      id
-      key
-      name
-    }
-  }
+	viewer {
+		id
+		name
+	}
+	organization {
+		id
+		name
+	}
+	teams {
+		nodes {
+			id
+			key
+			name
+		}
+	}
 }
 ```
 

@@ -8,12 +8,12 @@ target's `.symphony.cfg.json` and actual current-head CI evidence.
 The onboarding preference is "codex"; runtime selection
 uses the credentials actually forwarded to the review job:
 
-| Actions secret availability | Reviewer |
-| --- | --- |
-| `CADENCE_OPENAI_API_KEY` only | Codex |
-| `CADENCE_AI_REVIEW_ANTHROPIC_API_KEY` only | Claude |
-| Both | Codex |
-| Neither | Early configuration error |
+| Actions secret availability                | Reviewer                  |
+| ------------------------------------------ | ------------------------- |
+| `CADENCE_OPENAI_API_KEY` only              | Codex                     |
+| `CADENCE_AI_REVIEW_ANTHROPIC_API_KEY` only | Claude                    |
+| Both                                       | Codex                     |
+| Neither                                    | Early configuration error |
 
 `CADENCE_OPENAI_API_KEY` maps to `openai/codex-action` input `openai-api-key`
 (the Codex provider's OpenAI API key, commonly named `OPENAI_API_KEY` outside

@@ -20,17 +20,17 @@ If metadata access needs admin, accept an owner's settings screenshots/export;
 record unreadable scopes as unverified. Reuse existing settings without rotation.
 Organization presence does not establish target access or usable credentials.
 
-| Actions setting | Kind | Purpose / scope |
-| --- | --- | --- |
-| `CADENCE_APP_PRIVATE_KEY` | Secret | Cadence App PEM signing key: event route, admission, review publication, handoff, cleanup. |
-| `CADENCE_LINEAR_API_TOKEN` | Secret | Target Linear team read/workpad write and issue wakeups; needed by review, handoff and CI wakeups. |
-| `CADENCE_OPENAI_API_KEY` | Secret, individually optional | OpenAI provider key. Mapped to `openai/codex-action` input `openai-api-key` for the Codex OpenAI provider; no separate Actions secret named `OPENAI_API_KEY` is needed. |
-| `CADENCE_AI_REVIEW_ANTHROPIC_API_KEY` | Secret, individually optional | Anthropic provider key, mapped to Claude Action `anthropic_api_key`. |
-| `CADENCE_APP_ID` | Variable | Numeric App ID paired with the private key; not the installation ID or App slug. |
-| `CADENCE_REVIEWER` | Variable | Actual Cadence App `slug[bot]` login; verified against the minted App identity. |
-| `SYMPHONY_BOT_USER` | Variable | Actual author App `slug[bot]` login, distinct from Cadence. |
-| `CADENCE_CODEX_MODEL` | Optional variable | Account-accessible Codex model override; omission uses the reviewed provider Action default. Record its resolved model during live review. |
-| `CADENCE_CLAUDE_MODEL` | Variable | `claude-opus-5` under the published Claude review contract. Required when Claude is selected. |
+| Actions setting                       | Kind                          | Purpose / scope                                                                                                                                                         |
+| ------------------------------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `CADENCE_APP_PRIVATE_KEY`             | Secret                        | Cadence App PEM signing key: event route, admission, review publication, handoff, cleanup.                                                                              |
+| `CADENCE_LINEAR_API_TOKEN`            | Secret                        | Target Linear team read/workpad write and issue wakeups; needed by review, handoff and CI wakeups.                                                                      |
+| `CADENCE_OPENAI_API_KEY`              | Secret, individually optional | OpenAI provider key. Mapped to `openai/codex-action` input `openai-api-key` for the Codex OpenAI provider; no separate Actions secret named `OPENAI_API_KEY` is needed. |
+| `CADENCE_AI_REVIEW_ANTHROPIC_API_KEY` | Secret, individually optional | Anthropic provider key, mapped to Claude Action `anthropic_api_key`.                                                                                                    |
+| `CADENCE_APP_ID`                      | Variable                      | Numeric App ID paired with the private key; not the installation ID or App slug.                                                                                        |
+| `CADENCE_REVIEWER`                    | Variable                      | Actual Cadence App `slug[bot]` login; verified against the minted App identity.                                                                                         |
+| `SYMPHONY_BOT_USER`                   | Variable                      | Actual author App `slug[bot]` login, distinct from Cadence.                                                                                                             |
+| `CADENCE_CODEX_MODEL`                 | Optional variable             | Account-accessible Codex model override; omission uses the reviewed provider Action default. Record its resolved model during live review.                              |
+| `CADENCE_CLAUDE_MODEL`                | Variable                      | `claude-opus-5` under the published Claude review contract. Required when Claude is selected.                                                                           |
 
 At least one provider key is required. OpenAI only selects Codex; Anthropic only
 selects Claude; both select Codex; neither is incomplete. A selected invalid key
@@ -113,8 +113,8 @@ unmerged workflow code to make onboarding appear complete.
    unconfigured. Publish/install the reviewed callers on the default branch.
 2. **Credential probe.** Dispatch `symphony-client-setup.yml` on the default
    branch with `gh workflow run symphony-client-setup.yml --repo OWNER/REPO --ref
-   DEFAULT_BRANCH`. Inspect both `Check repository-visible settings` and `Verify
-   job-visible credentials` jobs. They must pass for this source ref. The probe
+DEFAULT_BRANCH`. Inspect both `Check repository-visible settings` and `Verify
+job-visible credentials` jobs. They must pass for this source ref. The probe
    checks repository-visible settings, environment admission, App/key/target
    grants, Linear target-team authentication and selected provider access. It does not
    prove inference, Linear write permission, reusable forwarding or a live review.

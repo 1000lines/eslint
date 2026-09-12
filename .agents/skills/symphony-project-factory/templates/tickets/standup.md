@@ -161,36 +161,36 @@ The daemon may perform only these action classes.
 
 1. Correct the Linear status to the derived lifecycle truth.
 
-   - Use the state names and fallbacks documented in
-     `$SYMPHONY_TOOLING_ROOT/docs/engineering/symphony/project-workflow.md`.
-   - If a correction would hide an unsafe transition or cannot be mapped to the
-     documented lifecycle, decline it and record the gap.
-   - Do not rewrite labels except where a documented status correction requires
-     a narrow companion update.
+    - Use the state names and fallbacks documented in
+      `$SYMPHONY_TOOLING_ROOT/docs/engineering/symphony/project-workflow.md`.
+    - If a correction would hide an unsafe transition or cannot be mapped to the
+      documented lifecycle, decline it and record the gap.
+    - Do not rewrite labels except where a documented status correction requires
+      a narrow companion update.
 
 2. Re-request review after dismissing that reviewer's now-stale earlier review.
 
-   - Only dismiss a review submitted against an earlier head SHA than the
-     current PR head.
-   - Never dismiss a review submitted against the current head.
-   - Dismiss stale approvals from `example-cadence-bot` and the ticket
-     owner/assignee before re-requesting review so the current head receives a
-     fresh review.
-   - Do not dismiss approvals from other human reviewers; those may be merge
-     gates the team has already earned.
-   - The dismissal message must name the current head SHA that superseded the
-     stale review.
-   - If dismissal is not permitted or the evidence is ambiguous, do not dismiss;
-     record the declined action and evidence.
+    - Only dismiss a review submitted against an earlier head SHA than the
+      current PR head.
+    - Never dismiss a review submitted against the current head.
+    - Dismiss stale approvals from `example-cadence-bot` and the ticket
+      owner/assignee before re-requesting review so the current head receives a
+      fresh review.
+    - Do not dismiss approvals from other human reviewers; those may be merge
+      gates the team has already earned.
+    - The dismissal message must name the current head SHA that superseded the
+      stale review.
+    - If dismissal is not permitted or the evidence is ambiguous, do not dismiss;
+      record the declined action and evidence.
 
 3. Retry suspected flaky CI.
 
-   - Retry a failed current-head check or run when the evidence makes flakiness
-     plausible and a retry surface is available.
-   - Record the suspected flaky signal, the retried check or run, and the
-     resulting evidence in the standup file.
-   - If the evidence is ambiguous or retry is not available, do not retry; record
-     the declined action and evidence.
+    - Retry a failed current-head check or run when the evidence makes flakiness
+      plausible and a retry surface is available.
+    - Record the suspected flaky signal, the retried check or run, and the
+      resulting evidence in the standup file.
+    - If the evidence is ambiguous or retry is not available, do not retry; record
+      the declined action and evidence.
 
 The daemon still does not fire bridges, merge, close or reopen PRs, perform
 project work, or promote broader label rewrites.

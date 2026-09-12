@@ -29,58 +29,58 @@ placeholder is explicitly unknown; initial states and label prose are never used
 
 1. Before PR creation, emit the read-only Linear query:
 
-   ```sh
-   node scripts/symphony/fetch-pr-progress.mjs --plan "$plan" \
-     --issue-map issue-map.json --query > progress.graphql
-   ```
+    ```sh
+    node scripts/symphony/fetch-pr-progress.mjs --plan "$plan" \
+      --issue-map issue-map.json --query > progress.graphql
+    ```
 
 2. Execute that query with the injected `linear_graphql` tool and save its raw
    `{data, errors}` response as `linear-response.json`. Prefer the injected tool;
    hosted workers keep injected auth. In a human-operated session without that
    tool, use the existing authenticated transport:
 
-   ```sh
-   node .agents/skills/linear-graphql/scripts/linear-graphql.mjs \
-     --query-file progress.graphql > linear-response.json
-   ```
+    ```sh
+    node .agents/skills/linear-graphql/scripts/linear-graphql.mjs \
+      --query-file progress.graphql > linear-response.json
+    ```
 
-   Follow the [Linear skill](../../../.agents/skills/linear-graphql/SKILL.md) for
-   auth. Do not switch identity after an auth failure or put credentials in progress files.
-   If lookup fails, save its error response (`{"errors":[{"message":"lookup failed"}]}`
-   for a transport failure) so the renderer reports Unknown, never an invented state.
+    Follow the [Linear skill](../../../.agents/skills/linear-graphql/SKILL.md) for
+    auth. Do not switch identity after an auth failure or put credentials in progress files.
+    If lookup fails, save its error response (`{"errors":[{"message":"lookup failed"}]}`
+    for a transport failure) so the renderer reports Unknown, never an invented state.
 
 3. Fetch and verify PR links from plan URLs and Linear attachments, then render:
 
-   ```sh
-   node scripts/symphony/fetch-pr-progress.mjs --plan "$plan" \
-     --issue-map issue-map.json --linear-response linear-response.json \
-     --current "$current" > progress.json
-   node scripts/symphony/render-pr-progress.mjs progress.json "$body_file"
-   gh pr create --draft --base "$base" --title "$title" --body-file "$body_file"
-   ```
+    ```sh
+    node scripts/symphony/fetch-pr-progress.mjs --plan "$plan" \
+      --issue-map issue-map.json --linear-response linear-response.json \
+      --current "$current" > progress.json
+    node scripts/symphony/render-pr-progress.mjs progress.json "$body_file"
+    gh pr create --draft --base "$base" --title "$title" --body-file "$body_file"
+    ```
 
-   The renderer replaces only the single `symphony-pr-progress:start/end` marker
-   pair in the body. Keep these markers outside an enclosing HTML comment:
-   Mermaid's arrows would end it. With no body argument, it prints the generated
-   block. Snapshot JSON is disposable evidence, not a second planning format.
+    The renderer replaces only the single `symphony-pr-progress:start/end` marker
+    pair in the body. Keep these markers outside an enclosing HTML comment:
+    Mermaid's arrows would end it. With no body argument, it prints the generated
+    block. Snapshot JSON is disposable evidence, not a second planning format.
 
 4. Capture the returned real PR URL as `pr_url`. Immediately repeat steps 1–2,
    then fetch with `--current-pr` so the new PR has a verified link:
 
-   ```sh
-   node scripts/symphony/fetch-pr-progress.mjs --plan "$plan" \
-     --issue-map issue-map.json --linear-response linear-response.json \
-     --current "$current" --current-pr "$pr_url" > progress.json
-   node scripts/symphony/render-pr-progress.mjs progress.json "$body_file"
-   gh pr edit "$pr_url" --body-file "$body_file"
-   gh pr view "$pr_url" --json body
-   ```
+    ```sh
+    node scripts/symphony/fetch-pr-progress.mjs --plan "$plan" \
+      --issue-map issue-map.json --linear-response linear-response.json \
+      --current "$current" --current-pr "$pr_url" > progress.json
+    node scripts/symphony/render-pr-progress.mjs progress.json "$body_file"
+    gh pr edit "$pr_url" --body-file "$body_file"
+    gh pr view "$pr_url" --json body
+    ```
 
-   For UI/API creation and updates, paste/send these exact generated body bytes.
-   Every rework handoff and handled status/replan event repeats steps 1–2 and 4,
-   even for body-only changes. Refresh Context, TL;DR and Summary when scope changes.
-   Do not reuse an old Linear response. When no worker handles a later event,
-   the PR owner runs the same refresh; the UTC snapshot time exposes its age.
+    For UI/API creation and updates, paste/send these exact generated body bytes.
+    Every rework handoff and handled status/replan event repeats steps 1–2 and 4,
+    even for body-only changes. Refresh Context, TL;DR and Summary when scope changes.
+    Do not reuse an old Linear response. When no worker handles a later event,
+    the PR owner runs the same refresh; the UTC snapshot time exposes its age.
 
 ## What the generated view means
 

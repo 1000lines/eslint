@@ -2,18 +2,23 @@
 name: Cadence Review Check Cleanup
 
 on:
-  workflow_run:
-    workflows: [Cadence AI Review Events, Cadence AI Review Trigger, Cadence AI Review]
-    types: [completed]
+    workflow_run:
+        workflows:
+            [
+                Cadence AI Review Events,
+                Cadence AI Review Trigger,
+                Cadence AI Review,
+            ]
+        types: [completed]
 
 permissions:
-  contents: read
-  actions: read
+    contents: read
+    actions: read
 
 jobs:
-  cleanup:
-    uses: 1000lines/symphony-client-workflows/.github/workflows/cadence-review-check-cleanup.yml@main
-    with:
-      helpers-ref: main
-    secrets:
-      CADENCE_APP_PRIVATE_KEY: ${{ secrets.CADENCE_APP_PRIVATE_KEY }}
+    cleanup:
+        uses: 1000lines/symphony-client-workflows/.github/workflows/cadence-review-check-cleanup.yml@main
+        with:
+            helpers-ref: main
+        secrets:
+            CADENCE_APP_PRIVATE_KEY: ${{ secrets.CADENCE_APP_PRIVATE_KEY }}
