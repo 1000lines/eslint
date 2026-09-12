@@ -1,0 +1,36 @@
+%% symphony-dag/v1
+flowchart LR
+  TS_CI_N["TS-CI-N: narrow CI (merge)"]
+  TS_LOG["TS-LOG: activity log (merge)"]
+  TSR_01["TSR-01: no-unused-expressions"]
+  TSR_02["TSR-02: no-redeclare"]
+  TSR_03["TSR-03: no-unused-vars"]
+  TSR_04["TSR-04: no-import-assign"]
+  TSR_05["TSR-05: no-restricted-exports"]
+  TSR_06["TSR-06: vars-on-top"]
+  TS_REPLAN["TS-REPLAN: six ready outcomes; amend graph"]
+  TS_REFAN["TS-REFAN: apply accepted replan"]
+  TS_CI_W["TS-CI-W: six merged outcomes; widen CI"]
+  TS_FINAL["TS-FINAL: log, validation, cleanup"]
+  TS_CI_N --> TSR_01
+  TS_CI_N --> TSR_02
+  TS_CI_N --> TSR_03
+  TS_CI_N --> TSR_04
+  TS_CI_N --> TSR_05
+  TS_CI_N --> TSR_06
+  TSR_01 --> TS_REPLAN
+  TSR_02 --> TS_REPLAN
+  TSR_03 --> TS_REPLAN
+  TSR_04 --> TS_REPLAN
+  TSR_05 --> TS_REPLAN
+  TSR_06 --> TS_REPLAN
+  TSR_01 --> TS_CI_W
+  TSR_02 --> TS_CI_W
+  TSR_03 --> TS_CI_W
+  TSR_04 --> TS_CI_W
+  TSR_05 --> TS_CI_W
+  TSR_06 --> TS_CI_W
+  TS_LOG --> TS_REPLAN
+  TS_REPLAN --> TS_REFAN
+  TS_REFAN --> TS_FINAL
+  TS_CI_W --> TS_FINAL
