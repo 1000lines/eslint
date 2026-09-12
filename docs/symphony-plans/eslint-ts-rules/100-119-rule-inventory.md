@@ -4,9 +4,9 @@ Snapshot: `1000lines/eslint:main@3d8a6128e70d2f641697d5ebbfd107f02fa1f671`. Part
 
 ## Coverage and interpretation
 
-The registry and rule-file survey agree on **292 rules**. The initial disposition is **37 candidates**, **93 deprecated rules deferred from delivery**, **21 other rules with existing TypeScript parser tests**, and **141 other rules with no demonstrated gap in this survey**. Every rule appears exactly once here or in the exclusion ledgers: [A–M](100-119-exclusions-a-m.md), [N](100-119-exclusions-n.md), [O–Z](100-119-exclusions-o-z.md).
+The registry and rule-file survey agree on **292 rules**. The revision 2 disposition is **35 eligible candidates**, **2 rules excluded for existing upstream ownership**, **93 deprecated rules deferred from delivery**, **21 other rules with existing TypeScript parser tests**, and **141 other rules with no demonstrated gap in this survey**. Every rule appears exactly once here or in the exclusion ledgers: [A–M](100-119-exclusions-a-m.md), [N](100-119-exclusions-n.md), [O–Z](100-119-exclusions-o-z.md).
 
-Inspected the registry, rule metadata, visitor/function structure and TypeScript-specific handling across `lib/rules/`, then corresponding tests/docs and relevant control flow for candidates. Ran a 45-snippet diagnostic survey against all 199 nondeprecated rules, focused follow-ups, and the 37 observations below with the existing TypeScript parser. For the 31 reserved candidates, compared reports with TypeScript-transpiled JavaScript; all showed a diagnostic difference. Transpilation is a syntax probe, not type checking or proof that every diagnostic should match. Structural declarations in the first six require the stated language-specific expectations.
+Inspected the registry, rule metadata, visitor/function structure and TypeScript-specific handling across `lib/rules/`, then corresponding tests/docs and relevant control flow for candidates. Ran a 45-snippet diagnostic survey against all 199 nondeprecated rules, focused follow-ups, and the original 37 observations with the existing TypeScript parser. For the original 31 reserved candidates (now 29 reserved plus the two promoted lanes), compared reports with TypeScript-transpiled JavaScript; all showed a diagnostic difference. Transpilation is a syntax probe, not type checking or proof that every diagnostic should match. The two upstream-owned gaps remain recorded in the N exclusion ledger. Declaration cases in the remaining lanes require the stated language-specific expectations.
 
 Probe environment: Node `20.20.0`, npm `11.13.0`, `@typescript-eslint/parser` `8.70.0`, TypeScript `6.0.3`. The fork intentionally has no package lock, so record resolved versions again when reproducing.
 
@@ -14,7 +14,7 @@ The survey is bounded: it does not certify complete TypeScript support for any e
 
 ## First wave and reserved inventory
 
-Only **TSR-01–TSR-06** are nodes commissioned by this initial DAG. **C-01–C-31 are inventory reservations, not task IDs, tickets, branches, or blocker endpoints. Do not create them during 100-120.** The required replan selects further work against review capacity and proposes any shared prerequisite before its dependent re-fan-out. All six first-wave rules have separate rule/test/doc files and need no new shared helper.
+Only **TSR-01–TSR-06** are nodes commissioned by this DAG. C-11 and C-15 are promoted to TSR-02 and TSR-03; their old reservation keys are retired. **The other 29 C-01–C-31 entries are inventory reservations, not task IDs, tickets, branches, or blocker endpoints. Do not create them during 100-120.** The required replan selects further work against review capacity and proposes any shared prerequisite before its dependent re-fan-out. All six first-wave rules have separate rule/test/doc files and need no new shared helper. The replacements correct direct selectors locally: unwrap the executor expression for TSR-02 and the discarded statement expression for TSR-03. Their distinct checks do not introduce a shared API. Replan if evidence invalidates that boundary.
 
 For every entry, the source/test/doc links below are also the exact prospective `owned_files`; no shared type, generated index, utility, configuration, or log file is included. For reserved entries this is a proposed boundary, not edit authority. `source_files` is the same trio; `lib/rules/index.js`, shared utilities and the accepted design are read-only context. First-wave implementation has `integration_pattern: none`.
 
@@ -62,45 +62,45 @@ Exact files:
 - [tests/lib/rules/no-unused-expressions.js](../../../tests/lib/rules/no-unused-expressions.js)
 - [docs/src/rules/no-unused-expressions.md](../../src/rules/no-unused-expressions.md)
 
-### TSR-02: no-redeclare
+### TSR-02: no-async-promise-executor
 
-**Disposition:** first wave; difficulty `hard`. **Source mechanism:** iterateDeclarations; variable.identifiers.
+**Disposition:** first wave (promoted from C-11); difficulty `easy`. **Source mechanism:** direct arguments.0.async selector.
 
-Observed TypeScript: `interface A {x:number} interface A {y:number}`
-
-Settings: default rule options; module source.
-
-Baseline: `redeclared` at 1:34. redeclared false positive.
-
-**Expected:** Allow legal interface, overload and type/value declaration combinations; continue reporting illegal duplicate runtime declarations and var redeclarations.
-
-**Syntax-only basis:** Declaration node kinds, flags, parent statement lists and parser-supplied references expose the distinction; no resolved types are required.
-
-Exact files:
-
-- [lib/rules/no-redeclare.js](../../../lib/rules/no-redeclare.js)
-- [tests/lib/rules/no-redeclare.js](../../../tests/lib/rules/no-redeclare.js)
-- [docs/src/rules/no-redeclare.md](../../src/rules/no-redeclare.md)
-
-### TSR-03: no-unused-vars
-
-**Disposition:** first wave; difficulty `hard`. **Source mechanism:** collectUnusedVariables; isExported; parameter fixes.
-
-Observed TypeScript: `export type F = (parameter: number) => void;`
+Observed TypeScript: `new Promise((async function(resolve){}) as any);`
 
 Settings: default rule options; module source.
 
-Baseline: `unusedVar` at 1:18. unusedVar false positive on parameter, with removal suggestion.
+Baseline: **no diagnostics**. async missing.
 
-**Expected:** Distinguish signature-only parameters, overloads, ambient/export declarations, type references and runtime uses using syntactic scope metadata; preserve JS reporting and safe suggestions.
+**Expected:** Inspect wrapped executor functions; preserve the current Promise identification policy.
 
-**Syntax-only basis:** Declaration node kinds, flags, parent statement lists and parser-supplied references expose the distinction; no resolved types are required.
+**Syntax-only basis:** The erased wrapper retains its value expression; inspect that expression and existing syntactic predicates, never the asserted type.
 
 Exact files:
 
-- [lib/rules/no-unused-vars.js](../../../lib/rules/no-unused-vars.js)
-- [tests/lib/rules/no-unused-vars.js](../../../tests/lib/rules/no-unused-vars.js)
-- [docs/src/rules/no-unused-vars.md](../../src/rules/no-unused-vars.md)
+- [lib/rules/no-async-promise-executor.js](../../../lib/rules/no-async-promise-executor.js)
+- [tests/lib/rules/no-async-promise-executor.js](../../../tests/lib/rules/no-async-promise-executor.js)
+- [docs/src/rules/no-async-promise-executor.md](../../src/rules/no-async-promise-executor.md)
+
+### TSR-03: no-new
+
+**Disposition:** first wave (promoted from C-15); difficulty `easy`. **Source mechanism:** ExpressionStatement > NewExpression.
+
+Observed TypeScript: `new Foo() as Foo;`
+
+Settings: default rule options; module source.
+
+Baseline: **no diagnostics**. noNewStatement missing.
+
+**Expected:** Recognize a discarded new expression under wrappers; keep assigned/returned instances valid.
+
+**Syntax-only basis:** The erased wrapper retains its value expression; inspect that expression and existing syntactic predicates, never the asserted type.
+
+Exact files:
+
+- [lib/rules/no-new.js](../../../lib/rules/no-new.js)
+- [tests/lib/rules/no-new.js](../../../tests/lib/rules/no-new.js)
+- [docs/src/rules/no-new.md](../../src/rules/no-new.md)
 
 ### TSR-04: no-import-assign
 
@@ -362,26 +362,6 @@ Exact files:
 - [tests/lib/rules/prefer-arrow-callback.js](../../../tests/lib/rules/prefer-arrow-callback.js)
 - [docs/src/rules/prefer-arrow-callback.md](../../src/rules/prefer-arrow-callback.md)
 
-### C-11: no-async-promise-executor
-
-**Disposition:** reserved for replan; difficulty `easy`. **Source mechanism:** direct arguments.0.async selector.
-
-Observed TypeScript: `new Promise((async function(resolve){}) as any);`
-
-Settings: default rule options; module source.
-
-Baseline: **no diagnostics**. async missing.
-
-**Expected:** Inspect wrapped executor functions; preserve the current Promise identification policy.
-
-**Syntax-only basis:** The erased wrapper retains its value expression; inspect that expression and existing syntactic predicates, never the asserted type.
-
-Exact files:
-
-- [lib/rules/no-async-promise-executor.js](../../../lib/rules/no-async-promise-executor.js)
-- [tests/lib/rules/no-async-promise-executor.js](../../../tests/lib/rules/no-async-promise-executor.js)
-- [docs/src/rules/no-async-promise-executor.md](../../src/rules/no-async-promise-executor.md)
-
 ### C-12: no-extra-boolean-cast
 
 **Disposition:** reserved for replan; difficulty `hard`. **Source mechanism:** isInBooleanContext; isInFlaggedContext.
@@ -441,25 +421,5 @@ Exact files:
 - [lib/rules/prefer-numeric-literals.js](../../../lib/rules/prefer-numeric-literals.js)
 - [tests/lib/rules/prefer-numeric-literals.js](../../../tests/lib/rules/prefer-numeric-literals.js)
 - [docs/src/rules/prefer-numeric-literals.md](../../src/rules/prefer-numeric-literals.md)
-
-### C-15: no-new
-
-**Disposition:** reserved for replan; difficulty `easy`. **Source mechanism:** ExpressionStatement > NewExpression.
-
-Observed TypeScript: `new Foo() as Foo;`
-
-Settings: default rule options; module source.
-
-Baseline: **no diagnostics**. noNewStatement missing.
-
-**Expected:** Recognize a discarded new expression under wrappers; keep assigned/returned instances valid.
-
-**Syntax-only basis:** The erased wrapper retains its value expression; inspect that expression and existing syntactic predicates, never the asserted type.
-
-Exact files:
-
-- [lib/rules/no-new.js](../../../lib/rules/no-new.js)
-- [tests/lib/rules/no-new.js](../../../tests/lib/rules/no-new.js)
-- [docs/src/rules/no-new.md](../../src/rules/no-new.md)
 
 Reserved candidates continue in [C-16–C-31 and shared-work findings](100-119-reserved-candidates.md).
