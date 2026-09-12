@@ -4,7 +4,7 @@
   "workingDirectory": ".",
   "instructions": ["SYMPHONY.md"],
   "commands": {
-    "build": [["bash", "-lc", "npm ci\n"]],
+    "build": [["bash", "-lc", "npm install --no-package-lock\n"]],
     "test": [["bash", "-lc", "node Makefile.js mocha"]]
   },
   "ci": {"requiredChecks": []}

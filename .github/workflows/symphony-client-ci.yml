@@ -15,4 +15,4 @@ jobs:
     with:
       tested-ref: ${{ github.event.pull_request.head.sha || github.sha }}
       commands: >-
-        [["bash", "-lc", "npm ci\n"], ["bash", "-lc", "node Makefile.js mocha"]]
+        [["bash", "-lc", "npm install --no-package-lock\n"], ["bash", "-lc", "node Makefile.js mocha"]]
