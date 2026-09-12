@@ -3,7 +3,7 @@ name: Symphony Client Setup
 # Generated credential probe; 100-64 owns reusable review/provider behavior.
 # Passing this workflow alone does not establish live caller or review readiness.
 on:
-  workflow_dispatch:
+  workflow_dispatch: {}
 
 permissions:
   actions: read

@@ -12,7 +12,7 @@ on:
     types: [completed]
   check_run:
     types: [completed]
-  status:
+  status: {}
 
 permissions:
   actions: read
